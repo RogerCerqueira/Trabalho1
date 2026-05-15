@@ -24,5 +24,4 @@ int main(){
     printf("informe um numero:\n");
     scanf("%d", &n);
     inverter(n);
-    return n;
 }
