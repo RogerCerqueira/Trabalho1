@@ -25,7 +25,7 @@ int main(){
                 
                 if(qtdeLetras == tamPalavra){
                     
-                })
+                }
             } 
         }
 
