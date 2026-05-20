@@ -5,7 +5,7 @@ int q3(char *txt, char c, int caseSensitive){
     int contador = 0;
     
     for(int i = 0; txt[i]; i++){
-        if(caseSensitive){
+        if(caseSensitive == !1){
             if(txt[i] == c){
                 contador++;
             }
@@ -27,7 +27,7 @@ int main(){
     fgets(txt, sizeof(txt), stdin);
     printf("Informe um caractere:\n");
     scanf("%c", &c);
-    printf("Deseja considerar a caixa (1 para não, 0 para sim)?\n");
+    printf("Deseja considerar a caixa (0 para nao, 1 para sim)?\n");
     scanf("%d", &caseSensitive);
 
     int resultado = q3(txt, c, caseSensitive);
