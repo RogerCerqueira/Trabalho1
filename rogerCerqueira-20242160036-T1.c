@@ -91,17 +91,21 @@ int teste(int a)
  */
 int q1(char data[])
 {
-  int datavalida = 1;
+    DataQuebrada dq = quebraData(data);
 
-  //quebrar a string data em strings sDia, sMes, sAno
+    if(!dq.valido) return 0;
+    if(dq.iMes < 1 || dq.iMes > 12) return 0;
+    if(dq.iDia < 1) return 0;
 
+    int diasMes[] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
-  //printf("%s\n", data);
+    
+    if((dq.iAno % 4 == 0 && dq.iAno % 100 != 0) || dq.iAno % 400 == 0)
+        diasMes[1] = 29;
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+    if(dq.iDia > diasMes[dq.iMes - 1]) return 0;
+
+    return 1;
 }
 
 
@@ -120,31 +124,48 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
-DiasMesesAnos q2(char datainicial[], char datafinal[])
-{
-
-    //calcule os dados e armazene nas três variáveis a seguir
+DiasMesesAnos q2(char datainicial[], char datafinal[]){
     DiasMesesAnos dma;
 
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
+    if(q1(datainicial) == 0){ dma.retorno = 2; return dma; }
+    if(q1(datafinal)   == 0){ dma.retorno = 3; return dma; }
 
+    DataQuebrada di = quebraData(datainicial);
+    DataQuebrada df = quebraData(datafinal);
 
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
+    // verifica se data inicial > data final
+    if(di.iAno > df.iAno ||
+      (di.iAno == df.iAno && di.iMes > df.iMes) ||
+      (di.iAno == df.iAno && di.iMes == df.iMes && di.iDia > df.iDia)){
+        dma.retorno = 4; return dma;
     }
-    
+
+    int anos  = df.iAno - di.iAno;
+    int meses = df.iMes - di.iMes;
+    int dias  = df.iDia - di.iDia;
+
+    if(dias < 0){
+        meses--;
+        int mesAnterior = df.iMes - 1 == 0 ? 12 : df.iMes - 1;
+        int anoAnterior = df.iMes - 1 == 0 ? df.iAno - 1 : df.iAno;
+        int diasMes[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+        if((anoAnterior % 4 == 0 && anoAnterior % 100 != 0) || anoAnterior % 400 == 0)
+            diasMes[1] = 29;
+        dias += diasMes[mesAnterior - 1];
+    }
+
+    if(meses < 0){
+        anos--;
+        meses += 12;
+    }
+
+    dma.qtdAnos  = anos;
+    dma.qtdMeses = meses;
+    dma.qtdDias  = dias;
+    dma.retorno  = 1;
+    return dma;
 }
+
 
 /*
  Q3 = encontrar caracter em texto
@@ -296,11 +317,41 @@ int q6(int num, int numBusca){
     1 se achou 0 se não achou
  */
 
- int q7(char matriz[8][10], char palavra[5])
- {
-     int achou;
-     return achou;
- }
+ int q7(char matriz[8][10], char palavra[5]){
+
+    int linhas = 8, colunas = 10;
+    int tamPalavra = strlen(palavra);
+
+    
+    int direcoes[8][2] = {
+        {0, 1},   // horizontal direita
+        {0, -1},  // horizontal esquerda
+        {1, 0},   // vertical baixo
+        {-1, 0},  // vertical cima
+        {1, 1},   // diagonal baixo-direita
+        {1, -1},  // diagonal baixo-esquerda
+        {-1, 1},  // diagonal cima-direita
+        {-1, -1}  // diagonal cima-esquerda
+    };
+
+    for(int l = 0; l < linhas; l++){
+        for(int c = 0; c < colunas; c++){
+            for(int d = 0; d < 8; d++){
+                int dl = direcoes[d][0];
+                int dc = direcoes[d][1];
+                int k;
+                for(k = 0; k < tamPalavra; k++){
+                    int nl = l + k * dl;
+                    int nc = c + k * dc;
+                    if(nl < 0 || nl >= linhas || nc < 0 || nc >= colunas) break;
+                    if(matriz[nl][nc] != palavra[k]) break;
+                }
+                if(k == tamPalavra) return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 
 
