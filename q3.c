@@ -1,23 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(){
-    char txt[250];
-    char letra;
-
-    printf("Redija um texto:\n");
-    fgets(txt, 250, stdin);
-
-    printf("Infrome uma letre:\n");
-    scanf("%c", &letra);
-
+int q3(char *txt, char c, int caseSensitive){
     int contador = 0;
     
     for(int i = 0; txt[i]; i++){
-        if(txt[i] == letra){
-            contador++;
+        if(caseSensitive){
+            if(txt[i] == c){
+                contador++;
+            }
+        } else {
+            if(txt[i] == c || txt[i] == c - 32 || txt[i] == c + 32){
+                contador++;
+            }
         }
     }
-    printf("%d", contador);
+    return contador;
+}
 
+int main(){
+    char txt[100];
+    char c;
+    int caseSensitive;
+
+    printf("Informe um texto:\n");
+    fgets(txt, sizeof(txt), stdin);
+    printf("Informe um caractere:\n");
+    scanf("%c", &c);
+    printf("Deseja considerar a caixa (1 para não, 0 para sim)?\n");
+    scanf("%d", &caseSensitive);
+
+    int resultado = q3(txt, c, caseSensitive);
+    printf("O caractere '%c' aparece %d vezes no texto.\n", c, resultado);
+
+    return 0;
 }
