@@ -156,11 +156,22 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @saida
     Um número n >= 0.
  */
-int q3(char *texto, char c, int isCaseSensitive)
-{
-    int qtdOcorrencias = -1;
-
-    return qtdOcorrencias;
+int q3(char *txt, char c, int caseSensitive){
+    
+    int contador = 0;
+    
+    for(int i = 0; txt[i]; i++){
+        if(caseSensitive == !1){
+            if(txt[i] == c){
+                contador++;
+            }
+        } else {
+            if(txt[i] == c || txt[i] == c - 32 || txt[i] == c + 32){
+                contador++;
+            }
+        }
+    }
+    return contador;
 }
 
 /*
@@ -178,10 +189,32 @@ int q3(char *texto, char c, int isCaseSensitive)
         O retorno da função, n, nesse caso seria 1;
 
  */
-int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
-    int qtdOcorrencias = -1;
+int q4(char *txt, char *palavra, int posicoes[30]){
 
+    int tamPalavra = strlen(palavra);
+    int qtdeLetras = 0;
+    int posFinal = 0;
+    int qtdOcorrencias = 0;
+    
+    for(int i = 0; i < strlen(txt); i++){
+        if(txt[i] == palavra[0]){
+            qtdeLetras = 1;
+            for(int j = 1; j < tamPalavra; j++){
+                if(txt[i + j] == palavra[j]){
+                    qtdeLetras++;
+                    posFinal = i + j;
+                } else {
+                    break;
+                }
+            }
+        }
+        if(qtdeLetras == tamPalavra){
+            posicoes[qtdOcorrencias * 2] = i + 1;
+            posicoes[qtdOcorrencias * 2 + 1] = posFinal + 1;
+            qtdOcorrencias++;
+            qtdeLetras = 0;
+        }
+    }
     return qtdOcorrencias;
 }
 
@@ -195,10 +228,22 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     Número invertido
  */
 
-int q5(int num)
-{
+int q5(int n){
 
-    return num;
+    char num[10];
+    sprintf(num, "%d", n);
+    int tam = strlen(num);
+    int zeroEsq = 0;
+    for (int i = tam -1; i>=0; i--){
+        if(num[i]!=0 || zeroEsq){
+            printf("%c", num[i]);
+            zeroEsq = 1;
+        }
+    }
+    if(!zeroEsq){
+        printf("0");
+    }
+    return n;
 }
 
 /*
@@ -211,9 +256,33 @@ int q5(int num)
     Quantidade de vezes que número de busca ocorre em número base
  */
 
-int q6(int numerobase, int numerobusca)
-{
-    int qtdOcorrencias;
+int q6(int num, int numBusca){
+
+    char txtNum[10];
+    sprintf(txtNum, "%d", num);
+    char txtBusca[10];
+    sprintf(txtBusca, "%d", numBusca);
+
+    int tamBusca = strlen(txtBusca);
+    int qtdeDigitos  = 0;
+    int qtdOcorrencias = 0;
+
+    for (int i = 0; i < strlen(txtNum); i++){
+        if(txtNum[i] == txtBusca[0]){
+            qtdeDigitos = 1;
+            for(int j = 1; j < tamBusca; j++){
+                if(txtNum[i + j] == txtBusca[j]){
+                    qtdeDigitos++;
+                }else {
+                    break;
+                }
+            }
+        }
+        if(qtdeDigitos == tamBusca){
+            qtdOcorrencias++;
+            qtdeDigitos = 0;
+        }
+    }
     return qtdOcorrencias;
 }
 

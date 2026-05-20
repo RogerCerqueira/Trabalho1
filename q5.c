@@ -2,7 +2,7 @@
 #include <string.h>
 
 
-void inverter(int n){
+int inverter(int n){
     char num[10];
     sprintf(num, "%d", n);
     int tam = strlen(num);
