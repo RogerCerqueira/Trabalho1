@@ -64,8 +64,8 @@ int lerJogada(int *linha, int *coluna){
         *linha = 2;
     }else{ 
         return 0; 
-    }   
-    // converte coluna
+    }
+
     if     (jogada[1] == '1') *coluna = 0;
     else if(jogada[1] == '2') *coluna = 1;
     else if(jogada[1] == '3') *coluna = 2;
@@ -115,7 +115,6 @@ int main(){
             break;
         }
 
-        // troca jogador
         jogadorAtual = (jogadorAtual == 1) ? 2 : 1;
     }
 
