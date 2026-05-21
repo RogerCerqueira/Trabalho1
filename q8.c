@@ -115,7 +115,6 @@ int main(){
             break;
         }
 
-        // troca jogador
         jogadorAtual = (jogadorAtual == 1) ? 2 : 1;
     }
 
